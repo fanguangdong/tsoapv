@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="cn.ts987.oa.domain">
+
+	<class name="ApproveInfo" table="ts_approveInfo">
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		
+		<many-to-one name="form" class="Form" column="formId"></many-to-one>
+		
+		<many-to-one name="approver" class="User" column="approverId"></many-to-one>
+		
+		<property name="approveTime" type="java.util.Date"/>
+		<property name="approval" type="java.lang.Boolean"/>
+		<property name="comment" type="java.lang.String" length="512"></property>
+		
+	</class>
+	
+
+</hibernate-mapping>

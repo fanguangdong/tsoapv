@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="cn.ts987.oa.domain">
+
+	<class name="Form" table="ts_form">
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		
+		<set name="approveInfos" inverse="true">
+			<key column="formId"></key>
+			<one-to-many class="ApproveInfo"/>
+		</set>
+		
+		<many-to-one name="formTemplate" class="FormTemplate" column="formTemplateId"></many-to-one>
+		
+		<many-to-one name="applicant" class="User" column="applicantId"></many-to-one>
+		
+		<property name="title" type="java.lang.String" length="64"/>
+		<property name="applyTime" type="java.util.Date"/>
+		<property name="path" type="java.lang.String" length="256"/>
+		<property name="status" type="java.lang.String" length="16"></property>
+		
+		
+	</class>
+	
+
+</hibernate-mapping>

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="cn.ts987.oa.domain">
+
+	<class name="Role" table="ts_role">
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		<property name="name"/>
+		<property name="description"/>
+		
+		<set name="users" table="ts_role_user" lazy="true">
+			<key column="roleId"></key>
+			<many-to-many class="User" column="userId"></many-to-many>
+		</set>
+		
+		<set name="privileges" table="ts_role_privilege" lazy="false">
+			<key column="roleId"></key>
+			<many-to-many class="Privilege" column="privilegeId" order-by="id ASC"></many-to-many>
+		</set>
+		
+	</class>
+	
+
+</hibernate-mapping>

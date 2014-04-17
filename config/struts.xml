@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<!-- 配置为开发模式 -->
+    <constant name="struts.devMode" value="true" />
+    
+    <!-- 把扩展名配置为action -->
+	<constant name="struts.action.extension" value="action"/>
+	
+	<!-- 把主题配置为simple -->
+	<constant name="struts.ui.theme" value="simple"></constant>
+
+
+    <package name="default" namespace="/" extends="struts-default">
+		<!-- 定义一个拦截器 -->  
+        <interceptors>  
+            <interceptor name="authority" class="cn.ts987.oa.interceptor.LoginInterceptor"> </interceptor>  
+            <!-- 拦截器栈 -->  
+            <interceptor-stack name="mydefault">  
+                <interceptor-ref name="authority" />
+                <interceptor-ref name="defaultStack" />    
+            </interceptor-stack>  
+        </interceptors>  
+		
+		<default-interceptor-ref name="mydefault"></default-interceptor-ref>
+		
+		<global-results>
+			<result name="illegalReq">/WEB-INF/jsp/illegalReq.jsp</result> 
+			<result name="loginUI">/WEB-INF/jsp/user/loginUI.jsp</result>  
+		</global-results>
+		
+		<action name="home_*" class="homeAction" method="{1}">
+			<result name="{1}">/WEB-INF/jsp/home/{1}.jsp</result>
+		</action>
+		
+		<action name="role_*" class="roleAction" method="{1}">
+			<result name="toList" type="redirectAction">role_list</result>
+			<result name="list">/WEB-INF/jsp/role/list.jsp</result>
+			<result name="saveUI">/WEB-INF/jsp/role/saveUI.jsp</result>
+			<result name="setPrivilegeUI">/WEB-INF/jsp/role/setPrivilegeUI.jsp</result>
+		</action>
+		
+		<action name="department_*" class="departmentAction" method="{1}">
+			<result name="toList" type="redirectAction">department_list?parentId=${parentId}</result>
+			<result name="list">/WEB-INF/jsp/department/list.jsp</result>
+			<result name="saveUI">/WEB-INF/jsp/department/saveUI.jsp</result>
+		</action>
+		
+		<action name="user_*" class="userAction" method="{1}">
+			<result name="toList" type="redirectAction">user_list?parentId=${parentId}</result>
+			<result name="list">/WEB-INF/jsp/user/list.jsp</result>
+			<result name="saveUI">/WEB-INF/jsp/user/saveUI.jsp?id=0</result> 
+			
+			
+			<result name="loginFailed">/WEB-INF/jsp/user/loginUI.jsp</result>  
+			
+			<result name="toIndex" type="redirectAction">home_index</result>
+			<result name="logout">/WEB-INF/jsp/user/logout.jsp</result>
+			<result name="input">/WEB-INF/jsp/user/loginUI.jsp</result>
+		</action>
+		
+		
+		<action name="processDefinition_*" class="processDefinitionAction" method="{1}">
+			<result name="toList" type="redirectAction">processDefinition_list</result>
+			<result name="list">/WEB-INF/jsp/workflow/processDefinition/list.jsp</result>
+			<result name="addUI">/WEB-INF/jsp/workflow/processDefinition/addUI.jsp</result>
+			
+			<!-- 下载图片用的 -->
+			<result name="showProcessImage" type="stream">
+				<param name="inputName">inputStream</param>
+				<param name="contentType">image/png</param>
+			</result>
+		</action>
+		
+		<!-- 表单模板action配置  -->
+		<action name="formTemplate_*" class="formTemplateAction" method="{1}">
+			<result name="toList" type="redirectAction">formTemplate_list</result>
+			<result name="list">/WEB-INF/jsp/workflow/formTemplate/list.jsp</result>
+			<result name="saveUI">/WEB-INF/jsp/workflow/formTemplate/saveUI.jsp</result>
+			
+			<result name="download" type="stream">
+				<param name="inputName">inputStream</param>
+				<param name="contentType">application/octet-stream</param>
+				<param name="contentDisposition">attachment;filename="${#fileName}.doc"</param>
+			</result>
+		</action>
+		
+		<action name="form_*" class="formAction" method="{1}">
+			<result name="formTemplateList">/WEB-INF/jsp/workflow/formTemplate/formTemplateList.jsp</result>
+			<result name="submitUI">/WEB-INF/jsp/workflow/form/submitUI.jsp</result>
+			<result name="myApplicationList">/WEB-INF/jsp/workflow/form/myApplicationList.jsp</result>
+			<result name="myTaskList">/WEB-INF/jsp/workflow/form/myTaskList.jsp</result>
+			<result name="approvedHistory">/WEB-INF/jsp/workflow/form/approvedHistory.jsp</result>
+			<result name="approveUI">/WEB-INF/jsp/workflow/form/approveUI.jsp</result>
+			
+			<!-- 下载申请表 -->
+			<result name="downloadApplication" type="stream">
+				<param name="inputName">inputStream</param>
+				<param name="contentType">application/octet-stream</param>
+				<param name="contentDisposition">attachment;filename="${#fileName}.doc"</param>
+			</result>
+		</action>
+    </package>
+
+    <!-- Add packages here -->
+
+</struts> 
